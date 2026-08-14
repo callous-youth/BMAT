@@ -1,0 +1,12 @@
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch==2.0.0+cu118
+torchvision==0.15.0+cu118
+higher==0.2.1
+timm==0.6.13
+numpy==1.23.5
+pandas==2.3.3
+Pillow==9.4.0
+scipy==1.11.4
+tqdm==4.67.3
+pretrainedmodels==0.7.4
+ipdb==0.13.13

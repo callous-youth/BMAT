@@ -1,0 +1,28 @@
+# Python and editor state
+__pycache__/
+*.py[cod]
+.DS_Store
+._*
+.idea/
+.vscode/
+.pytest_cache/
+.venv/
+venv/
+
+# Local data, checkpoints, generated adversarial examples, and logs
+checkpoints/
+ckpt/
+data/
+datasets/
+outputs/
+results/
+logs/
+*.pth
+*.pt
+*.ckpt
+*.npy
+*.npz
+
+# Keep the versioned ImageNet split only.
+!splits/
+!splits/*.csv

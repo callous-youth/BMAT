@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="BMAT: Bilevel-Minimax Adversarial Transfer for efficient and reliable transfer attacks.">
+  <title>BMAT | ECCV 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260814f">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="#top">BMAT</a>
+    <nav aria-label="Section navigation">
+      <a href="#method">Method</a>
+      <a href="#classification">ImageNet</a>
+      <a href="#segmentation">Segmentation</a>
+      <a href="#sam">SAM</a>
+      <a href="#citation">Citation</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="paper-title">
+      <p class="eyebrow">ECCV 2026</p>
+      <h1 id="paper-title">Learning with Bilevel-Minimax Optimization for Efficient and Reliable Transfer Attacks</h1>
+      <p class="authors">Yaohua Liu<sup>1</sup>, Yifan Guo<sup>2</sup>, and Jiaxin Gao<sup>3,*</sup></p>
+      <p class="affiliations"><span><sup>1</sup>The University of Hong Kong</span><span><sup>2</sup>Dalian University of Technology</span><span><sup>3</sup>The Hong Kong Polytechnic University</span></p>
+      <div class="links" aria-label="Project links">
+        <span class="link-button muted" aria-disabled="true">Paper coming soon</span>
+        <a class="link-button" href="https://github.com/callous-youth/BMAT" target="_blank" rel="noreferrer">Code</a>
+      </div>
+    </section>
+
+    <section class="hero-visual" aria-label="BMAT overview">
+      <figure>
+        <img src="assets/overview.png" alt="BMAT overview combining transferable loss-landscape optimization, ImageNet classification results, and semantic segmentation results.">
+        <figcaption><strong>Figure 1.</strong> BMAT shifts the attack toward a more transferable region of the loss landscape and improves transferability across ImageNet classification and semantic segmentation benchmarks.</figcaption>
+      </figure>
+      <div class="figure-explainer">
+        <p><strong>Loss landscape.</strong> In contrast to a flatter but weakly transferable region obtained by VTA, BMAT finds a direction with a stronger transferable loss response.</p>
+        <p><strong>Classification.</strong> The grouped bars summarize average ASR improvements over the CNN, robust-ensemble, and Transformer victim families.</p>
+        <p><strong>Segmentation.</strong> The radial plots report mIoU reductions across Cityscapes and ADE20K; lower values indicate stronger transfer attacks.</p>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Key results">
+      <div><strong>30+</strong><span>victim models across CNNs, robust ensembles, and Transformers</span></div>
+      <div><strong>24</strong><span>classification attack variants evaluated on ImageNet</span></div>
+      <div><strong>+23.28%</strong><span>average ASR gain over all classification variants</span></div>
+      <div><strong>2&times;</strong><span>up to twofold mIoU reduction in cross-model segmentation transfer</span></div>
+    </section>
+
+    <section class="intro" id="abstract">
+      <p class="section-kicker">Overview</p>
+      <p class="lead">BMAT learns how to <em>seed</em> an attack trajectory, rather than optimizing a perturbation against a fixed surrogate alone.</p>
+      <p>It couples initialization, perturbation generation, and surrogate adaptation in a finite-step bilevel-minimax procedure. The resulting attack improves transfer across image classification, semantic segmentation, and a prompt-free Segment Anything Model evaluation.</p>
+    </section>
+
+    <section class="method-section" id="method">
+      <div class="section-heading">
+        <p class="section-kicker">Method</p>
+        <h2>Coordinate the entire attack trajectory.</h2>
+      </div>
+      <img src="assets/pipeline.png" alt="BMAT pipeline showing the bilevel-minimax formulation, Soft Weight Modulator, and Implicit Gradient Approximator.">
+      <p class="figure-caption"><strong>Figure 2.</strong> BMAT learns an initialization perturbation at the outer level while the inner response jointly adapts perturbations and surrogate soft weights. Fast BMAT retains this learned seed and uses standard projected sign updates for efficient attacks.</p>
+      <div class="method-notes">
+        <p><strong>SWM</strong><span>Jointly adapts perturbations and soft surrogate weights to seek gradients that generalize beyond a fixed surrogate.</span></p>
+        <p><strong>IGA</strong><span>Uses an implicit hypergradient to learn an initialization perturbation without unrolling the complete inner optimization.</span></p>
+        <p><strong>Fast BMAT</strong><span>Uses the learned seed for efficient standard sign/projection updates at deployment time.</span></p>
+      </div>
+    </section>
+
+    <section class="results-section" id="classification">
+      <div class="section-heading split-heading">
+        <div><p class="section-kicker">Image Classification</p><h2>Consistent gains across victim families.</h2></div>
+        <p>ImageNet ASR under a ResNet-50 surrogate. Each value aggregates the camera-ready results over four CNN, three robust-ensemble, or three Transformer victims.</p>
+      </div>
+      <div class="table-frame">
+        <div class="table-scroll">
+          <table class="results-table">
+            <thead>
+              <tr><th rowspan="2">Base attacker</th><th colspan="2">CNN (4)</th><th colspan="2">Ensemble (3)</th><th colspan="2">Transformer (3)</th><th colspan="3">Overall (10)</th></tr>
+              <tr><th>Base</th><th>+ BMAT</th><th>Base</th><th>+ BMAT</th><th>Base</th><th>+ BMAT</th><th>Base</th><th>+ BMAT</th><th>Gain</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>PGD</th><td>20.09</td><td class="ours">28.02</td><td>8.43</td><td class="ours">11.58</td><td>9.35</td><td class="ours">12.50</td><td>13.37</td><td class="ours">18.43</td><td class="gain">+5.06</td></tr>
+              <tr><th>MI</th><td>31.22</td><td class="ours">42.45</td><td>13.05</td><td class="ours">21.09</td><td>14.95</td><td class="ours">19.49</td><td>20.89</td><td class="ours">29.15</td><td class="gain">+8.26</td></tr>
+              <tr><th>VMI</th><td>41.19</td><td class="ours">51.25</td><td>19.34</td><td class="ours">27.61</td><td>20.83</td><td class="ours">25.20</td><td>28.53</td><td class="ours">36.34</td><td class="gain">+7.82</td></tr>
+              <tr><th>SI</th><td>25.98</td><td class="ours">33.29</td><td>10.51</td><td class="ours">13.00</td><td>12.38</td><td class="ours">14.93</td><td>17.26</td><td class="ours">21.70</td><td class="gain">+4.43</td></tr>
+              <tr><th>TI</th><td>22.11</td><td class="ours">28.66</td><td>9.29</td><td class="ours">12.05</td><td>9.47</td><td class="ours">11.13</td><td>14.47</td><td class="ours">18.42</td><td class="gain">+3.95</td></tr>
+              <tr><th>DI</th><td>42.28</td><td class="ours">48.89</td><td>19.03</td><td class="ours">21.50</td><td>16.85</td><td class="ours">19.07</td><td>27.68</td><td class="ours">31.73</td><td class="gain">+4.05</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note"><span class="legend-swatch"></span> BMAT-enhanced results. ASR (%) &uarr;; higher is better. Gain is in percentage points. The complete 24-variant table is reported in the paper.</p>
+      </div>
+    </section>
+
+    <section class="analysis-section" id="analysis">
+      <div class="section-heading split-heading">
+        <div><p class="section-kicker">Optimization Dynamics</p><h2>Coordinated updates improve transfer.</h2></div>
+        <p>SWM smooths sharp, surrogate-specific regions, while IGA moves the initial perturbation toward an attack trajectory with a stronger feature shift.</p>
+      </div>
+      <img src="assets/dynamics.png" alt="BMAT analysis showing surrogate loss flattening and initialization perturbations evolving toward stronger feature shifts.">
+      <p class="figure-caption"><strong>Figure 3.</strong> SWM locally moderates the surrogate landscape and IGA moves the initialization perturbation toward a trajectory with a larger feature shift, which is associated with stronger cross-model transfer.</p>
+    </section>
+
+    <section class="segmentation-section" id="segmentation">
+      <div class="section-heading split-heading">
+        <div><p class="section-kicker">Semantic Segmentation</p><h2>Transfer extends beyond classification.</h2></div>
+        <p>Cityscapes mIoU &darr;; lower indicates a stronger attack. BMAT is evaluated with CNN and Transformer surrogate structures against ten cross-model victims.</p>
+      </div>
+      <div class="segmentation-layout">
+        <div class="table-frame compact-table">
+          <table class="results-table segmentation-table">
+            <thead><tr><th>Surrogate</th><th>Method</th><th>CNN victims<br><small>mean mIoU</small></th><th>Transformer victims<br><small>mean mIoU</small></th></tr></thead>
+            <tbody>
+              <tr><th rowspan="2">FCN</th><td>MI</td><td>3.94</td><td>33.28</td></tr>
+              <tr><td class="ours-label">MI + BMAT</td><td class="ours">3.08</td><td class="ours">32.47</td></tr>
+              <tr><th rowspan="2">DLV3-R50</th><td>MI</td><td>4.71</td><td>38.19</td></tr>
+              <tr><td class="ours-label">MI + BMAT</td><td class="ours">2.54</td><td class="ours">35.57</td></tr>
+              <tr><th rowspan="2">Segformer</th><td>MI</td><td>23.34</td><td>20.52</td></tr>
+              <tr><td class="ours-label">MI + BMAT</td><td class="ours">11.85</td><td class="ours">20.11</td></tr>
+            </tbody>
+          </table>
+          <p class="table-note"><span class="legend-swatch"></span> BMAT-enhanced results. Averages are computed from the full Cityscapes table in the paper.</p>
+        </div>
+        <figure>
+          <img src="assets/segmentation.png" alt="Semantic segmentation attack visualizations for CNN and Transformer victim models on Cityscapes.">
+          <figcaption><strong>Figure 4.</strong> Qualitative Cityscapes results. The transferred adversarial examples disrupt both CNN- and Transformer-based semantic segmentation predictions.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="sam-section" id="sam">
+      <div class="section-heading split-heading">
+        <div><p class="section-kicker">Foundation Model Transfer</p><h2>Attacking SAM without prompts.</h2></div>
+        <p>Adversarial examples are crafted on a Segformer surrogate and transferred to SAM without prompt guidance. BMAT causes evident failures in building boundaries, windows, and road-side structures.</p>
+      </div>
+      <figure>
+        <img src="assets/sam.png" alt="Prompt-free Segment Anything Model attack comparison using a Segformer surrogate. BMAT causes strong segmentation errors across two Cityscapes scenes.">
+        <figcaption>Clean images and clean SAM segmentations are followed by transfer attacks from PGD, SegPGD, CosPGD, NI, MI, EBAD, and BMAT. The comparison is qualitative because SAM is evaluated without prompts.</figcaption>
+      </figure>
+    </section>
+
+    <section class="citation" id="citation">
+      <p class="section-kicker">Citation</p>
+      <h2>BibTeX</h2>
+      <pre><code>@inproceedings{liu2026bmat,
+  title={Learning with Bilevel-Minimax Optimization for Efficient and Reliable Transfer Attacks},
+  author={Liu, Yaohua and Guo, Yifan and Gao, Jiaxin},
+  booktitle={European Conference on Computer Vision},
+  year={2026}
+}</code></pre>
+    </section>
+  </main>
+
+  <footer><span>BMAT</span><span>ECCV 2026</span><a href="https://github.com/callous-youth/BMAT" target="_blank" rel="noreferrer">GitHub</a></footer>
+</body>
+</html>
