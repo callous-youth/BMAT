@@ -3,6 +3,8 @@
 Official code for the ECCV 2026 paper *Learning with Bilevel-Minimax
 Optimization for Efficient and Reliable Transfer Attacks*.
 
+[Official Paper](https://link.springer.com/chapter/10.1007/978-3-032-37196-6_37) | [arXiv](https://arxiv.org/abs/2608.11815)
+
 This release contains the ImageNet classification implementation of **Fast
 BMAT**. It implements Phase-I SWM/IGA trajectory optimization followed by the
 standard Phase-II transfer attack. The exploratory Full-BMAT variant and
@@ -103,10 +105,13 @@ For a quick smoke test, append `--max_batches 2`. Omit it for the full
 ## Citation
 
 ```bibtex
-@inproceedings{liu2026bmat,
+@inproceedings{liu2026learning,
   title={Learning with Bilevel-Minimax Optimization for Efficient and Reliable Transfer Attacks},
   author={Liu, Yaohua and Guo, Yifan and Gao, Jiaxin},
   booktitle={European Conference on Computer Vision},
-  year={2026}
+  pages={680--701},
+  year={2026},
+  organization={Springer},
+  doi={10.1007/978-3-032-37196-6_37}
 }
 ```
