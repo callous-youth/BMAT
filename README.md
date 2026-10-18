@@ -8,6 +8,8 @@ BMAT**. It implements Phase-I SWM/IGA trajectory optimization followed by the
 standard Phase-II transfer attack. The exploratory Full-BMAT variant and
 implementations of external baselines are intentionally not included.
 
+**Fast BMAT has been integrated into [TransferAttack](https://github.com/Trustworthy-AI-Group/TransferAttack), a framework that brings together a wide range of transfer-based adversarial attacks.**
+
 ## Environment
 
 The experiments were run with Python 3.10, PyTorch 2.0.0, and CUDA 11.8.
